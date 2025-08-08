@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchPaginatedUsers, fetchUsers } from "./UsersThunk";
+import { fetchPaginatedUsers, fetchUserById, fetchUsers } from "./usersThunk";
 interface User {
     id: number;
     firstName: string;
@@ -7,6 +7,7 @@ interface User {
     phone: string;
     email: string;
     avatar: string;
+    bio: string;
     createdAt: string;
 }
 
@@ -15,6 +16,7 @@ interface UsersState {
         [page: number]: User[];
     };
     allUsers: User[];
+    selectedUser: User | null;
     loading: boolean;
     error: string | null;
     page: number;
@@ -25,6 +27,7 @@ interface UsersState {
 const initialState: UsersState = {
     pages: {},
     allUsers: [],
+    selectedUser: null,
     loading: false,
     error: null,
     page: 1,
@@ -75,6 +78,19 @@ const usersSlice = createSlice({
             .addCase(fetchUsers.rejected, (state, action) => {
                 state.error =
                     action.error.message ?? "Ошибка при загрузке пользователей";
+                state.loading = false;
+            })
+            .addCase(fetchUserById.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.selectedUser = null;
+            })
+            .addCase(fetchUserById.fulfilled, (state, action) => {
+                state.selectedUser = action.payload;
+                state.loading = false;
+            })
+            .addCase(fetchUserById.rejected, (state, action) => {
+                state.error = action.error.message ?? "Ошибка загрузки";
                 state.loading = false;
             });
     },

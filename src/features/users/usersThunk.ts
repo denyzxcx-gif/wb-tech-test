@@ -36,3 +36,11 @@ export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {
     const response = await usersApi.getAll();
     return response;
 });
+
+export const fetchUserById = createAsyncThunk(
+    "users/fetchUserById",
+    async (id: string) => {
+        const response = await usersApi.getById(id);
+        return response;
+    }
+);

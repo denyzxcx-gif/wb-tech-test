@@ -23,6 +23,11 @@ const usersApi = {
             data: res.data,
         };
     },
+
+    async getById(id: string): Promise<User> {
+        const res = await axiosClient.get<User>(`/users/${id}`);
+        return res.data;
+    },
 };
 
 export default usersApi;
