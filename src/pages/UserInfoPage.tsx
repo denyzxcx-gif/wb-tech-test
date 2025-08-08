@@ -13,7 +13,7 @@ import {
 import { useNavigate, useParams } from "react-router";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks";
-import { fetchUserById } from "../features/users/UsersThunk";
+import { fetchUserById } from "../features/users/usersThunk";
 
 function UserDetailsPage() {
     const userId = useParams().userId;

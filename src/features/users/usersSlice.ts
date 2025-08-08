@@ -1,5 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchPaginatedUsers, fetchUserById, fetchUsers } from "./usersThunk";
+import {
+    fetchPaginatedUsers,
+    fetchUserById,
+    fetchUsers,
+    addUser,
+    updateUser,
+} from "./usersThunk";
 interface User {
     id: number;
     firstName: string;
@@ -91,6 +97,40 @@ const usersSlice = createSlice({
             })
             .addCase(fetchUserById.rejected, (state, action) => {
                 state.error = action.error.message ?? "Ошибка загрузки";
+                state.loading = false;
+            })
+            .addCase(addUser.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(addUser.fulfilled, (state, action) => {
+                state.allUsers.push(action.payload);
+                state.totalCount += 1;
+                state.loading = false;
+            })
+            .addCase(addUser.rejected, (state, action) => {
+                state.error =
+                    action.error.message ??
+                    "Ошибка при добавлении пользователя";
+                state.loading = false;
+            })
+            .addCase(updateUser.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(updateUser.fulfilled, (state, action) => {
+                const index = state.allUsers.findIndex(
+                    (user) => user.id === action.payload.id
+                );
+                if (index !== -1) {
+                    state.allUsers[index] = action.payload;
+                }
+                state.loading = false;
+            })
+            .addCase(updateUser.rejected, (state, action) => {
+                state.error =
+                    action.error.message ??
+                    "Ошибка при обновлении пользователя";
                 state.loading = false;
             });
     },

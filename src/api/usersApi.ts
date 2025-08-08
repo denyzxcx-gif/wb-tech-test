@@ -28,6 +28,19 @@ const usersApi = {
         const res = await axiosClient.get<User>(`/users/${id}`);
         return res.data;
     },
+
+    async create(userData: Omit<User, "id" | "createdAt">): Promise<User> {
+        const res = await axiosClient.post<User>("/users", userData);
+        return res.data;
+    },
+
+    async update(
+        userId: number,
+        userData: Omit<User, "id" | "createdAt">
+    ): Promise<User> {
+        const res = await axiosClient.put<User>(`/users/${userId}`, userData);
+        return res.data;
+    },
 };
 
 export default usersApi;
