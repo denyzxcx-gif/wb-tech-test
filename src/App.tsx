@@ -16,12 +16,12 @@ const routes: RouteConfig[] = [
     },
     {
         name: "UsersTableDisplay",
-        path: "users",
+        path: "/users",
         element: <UsersTableDisplay />,
     },
     {
         name: "UserInfo",
-        path: "users/:userId",
+        path: "/users/:userId",
         element: <UserInfoPage />,
     },
 ];
