@@ -172,7 +172,7 @@ function UsersTableDisplay() {
                                     ) : (
                                         <TableRow>
                                             <TableCell
-                                                colSpan={4}
+                                                colSpan={5}
                                                 align="center"
                                             >
                                                 <Typography>

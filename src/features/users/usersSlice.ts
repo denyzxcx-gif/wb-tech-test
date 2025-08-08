@@ -37,7 +37,7 @@ const initialState: UsersState = {
     loading: false,
     error: null,
     page: 1,
-    limit: 10,
+    limit: 7,
     totalCount: 0,
 };
 
