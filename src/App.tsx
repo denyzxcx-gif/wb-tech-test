@@ -29,17 +29,19 @@ const routes: RouteConfig[] = [
 function App() {
     return (
         <>
-            <main>
-                <Routes>
-                    {routes.map((route) => (
-                        <Route
-                            key={route.path}
-                            path={route.path}
-                            element={route.element}
-                        />
-                    ))}
-                </Routes>
-            </main>
+            <div className="wrapper">
+                <main>
+                    <Routes>
+                        {routes.map((route) => (
+                            <Route
+                                key={route.path}
+                                path={route.path}
+                                element={route.element}
+                            />
+                        ))}
+                    </Routes>
+                </main>
+            </div>
         </>
     );
 }

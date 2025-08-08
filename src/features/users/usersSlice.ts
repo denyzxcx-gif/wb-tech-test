@@ -1,0 +1,84 @@
+import { createSlice } from "@reduxjs/toolkit";
+import { fetchPaginatedUsers, fetchUsers } from "./UsersThunk";
+interface User {
+    id: number;
+    firstName: string;
+    lastName: string;
+    phone: string;
+    email: string;
+    avatar: string;
+    createdAt: string;
+}
+
+interface UsersState {
+    pages: {
+        [page: number]: User[];
+    };
+    allUsers: User[];
+    loading: boolean;
+    error: string | null;
+    page: number;
+    limit: number;
+    totalCount: number;
+}
+
+const initialState: UsersState = {
+    pages: {},
+    allUsers: [],
+    loading: false,
+    error: null,
+    page: 1,
+    limit: 10,
+    totalCount: 0,
+};
+
+const usersSlice = createSlice({
+    name: "users",
+    initialState,
+    reducers: {},
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchPaginatedUsers.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+
+            .addCase(fetchPaginatedUsers.fulfilled, (state, action) => {
+                state.pages[action.payload.page] = action.payload.users;
+                // state.totalCount = action.payload.totalCount;
+                state.page = action.payload.page;
+                state.limit = action.payload.limit;
+                state.loading = false;
+            })
+
+            .addCase(fetchPaginatedUsers.rejected, (state, action) => {
+                const error = action.payload as any;
+
+                if (error?.type === "CACHED") {
+                    state.page = error.page;
+                    state.loading = false;
+                    return;
+                }
+
+                state.error = action.error.message ?? "Ошибка";
+                state.loading = false;
+            })
+            .addCase(fetchUsers.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchUsers.fulfilled, (state, action) => {
+                state.allUsers = action.payload;
+                state.totalCount = action.payload.length;
+                state.loading = false;
+            })
+            .addCase(fetchUsers.rejected, (state, action) => {
+                state.error =
+                    action.error.message ?? "Ошибка при загрузке пользователей";
+                state.loading = false;
+            });
+    },
+});
+
+export default usersSlice.reducer;
+export type { User };

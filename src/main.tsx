@@ -2,13 +2,18 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router";
 import { CssBaseline } from "@mui/material";
+import { Provider } from "react-redux";
+import { store } from "./store.ts";
 import App from "./App.tsx";
+import "./styles.css";
 
 createRoot(document.getElementById("root")!).render(
     <StrictMode>
         <CssBaseline />
         <BrowserRouter>
-            <App />
+            <Provider store={store}>
+                <App />
+            </Provider>
         </BrowserRouter>
     </StrictMode>
 );
